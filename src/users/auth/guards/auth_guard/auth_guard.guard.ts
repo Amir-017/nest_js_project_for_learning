@@ -6,7 +6,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { log } from 'console';
 
 @Injectable()
 export class AuthGuardGuard implements CanActivate {
@@ -25,10 +24,9 @@ export class AuthGuardGuard implements CanActivate {
     const payload = this._JwtService.verify(authHeader, {
       secret: process.env.API_KEY,
     });    
-    // console.log(payload);
     if (!payload) {
       throw new UnauthorizedException(
-        'You are not authorized to access this resource',
+        'You are not authenticated to access this resource',
       );
     }
     request.user = payload;
