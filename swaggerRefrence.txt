@@ -1,0 +1,24 @@
+1 - نعمل الكونفجريشن هيكون موجود ف صفحة ال main
+2- عندنا شوية ميثودز دي اللي بنستخدمها علي طول بقا
+- @ApiTage('users')  >> دي اللي بتخلي السيكشن بتاع اليوزرز بلميثودز بتاعتو تظهر ف صفحة سواجر
+- @ApiOperation({summary:'.....'}) >> دا الوصف اللي بيظهر جمب كل راوت
+- @ApiOKResponse({type:Dto, description:'.....'}) >> دا اللي هيظهر ف سيكشن الريسبونس ف صفحة سواجر حطينا النوع هنا دي تي او عشان يظهر الداتا علي طول دينامك من غير وجع دماغ
+- @ApiProperty({description:'....', example:'.....'}) >>>لازم نستخدم الميثود دي  type:Dto دي بقا بتتحط جوا صفحة ال دي تي او فوق كل حاجه عندك اسم مثلا تتحط فوقه عشان نخلي الحته دي تشتغل 
+- @ApiParam ({name:'....' , description:'....' , example:'....'}) >>هنا يعني id هيتبعت دينامك عشان يظهر ف صفحة سواجر ف سيكشن البراميترز ان ف  idبنحطها علي اي راوت هيبق فيه 
+- @ApiBearerAuth() >> دي اهم واحده انك بتقول للفرونت ان الروات دا محمي لازم تعمل لوجين الاول ف الراجل يروح يعمل لوجين ويجيب توكين ولما نحط الميثود دي هيظهر زرار جمب الراوت المحمي تدوس عليه وتحط التوكين وهيعديك عادي
+- @ApiBearerAuth() >>هسيبلك هنا الكونفجريشن جاهز مره واحده عشان تبق تاخده علي طول main متنساش ان دي لازم تحطها بايدك ف صفحة ال  
+
+-configraution within main:
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+
+ const config = new DocumentBuilder()
+    .setTitle('My API')
+    .addBearerAuth()
+    .setDescription('NestJS Swagger')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('api', app, document);
