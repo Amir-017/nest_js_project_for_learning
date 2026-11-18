@@ -13,7 +13,11 @@ export class User {
   @Prop({ required: true, minLength: 3, maxLength: 15 })
   name!: string;
 
-  @Prop({ required: true, match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, unique: true })
+  @Prop({
+    required: true,
+    match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    unique: true,
+  })
   email!: string;
 
   @Prop({ required: false, minLength: 6, maxLength: 100 })
@@ -28,7 +32,7 @@ export class User {
   @Prop({ required: false })
   googleId!: string;
 
-    @Prop({ required: false })
+  @Prop({ required: false })
   picture!: string;
 }
 

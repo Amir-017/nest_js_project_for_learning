@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuardGuard implements CanActivate {
-  constructor(private _JwtService: JwtService) { }
+  constructor(private _JwtService: JwtService) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -33,9 +33,7 @@ export class AuthGuardGuard implements CanActivate {
       request.user = payload;
       return true;
     } catch (error) {
-      throw new UnauthorizedException(
-        `Invalid token: ${error}`,
-      );
+      throw new UnauthorizedException(`Invalid token: ${error}`);
     }
   }
 }

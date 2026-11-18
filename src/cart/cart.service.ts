@@ -1,20 +1,22 @@
-
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Cart } from './Schemas/cart.schema';
-import { log } from 'console';
-import { UsersModule } from 'src/users/users.module';
-import { User } from 'src/users/Schemas/user.scham';
+import { User } from '../users/Schemas/user.scham';
 
 @Injectable()
 export class CartService {
   constructor(
     @InjectModel('Cart') private cartModel: Model<Cart>,
-    @InjectModel('User') private userModel: Model<User>
-  ) { }
+    @InjectModel('User') private userModel: Model<User>,
+  ) {}
 
   ////////////////////////////////////////////////////////////
 
@@ -23,7 +25,6 @@ export class CartService {
   ////////////////////////////////////////////////////////////
 
   async create(createCartDto: CreateCartDto, id: string) {
-
     const pId = createCartDto.products[0].productId;
 
     const q = Number(createCartDto.products[0].quantity);
@@ -33,9 +34,7 @@ export class CartService {
     });
 
     if (!cartuser) {
-
       return this.cartModel.create({
-
         userName: id,
 
         products: [
@@ -52,15 +51,11 @@ export class CartService {
     );
 
     if (productFound) {
-
       productFound.quantity += q;
 
       cartuser.markModified('products');
-
     } else {
-
       cartuser.products.push({
-
         productId: pId,
 
         quantity: q,
@@ -79,7 +74,6 @@ export class CartService {
   ////////////////////////////////////////////////////////////
 
   findAll(word: string) {
-    log(word)
     return this.cartModel.find();
   }
 
@@ -101,7 +95,6 @@ export class CartService {
   ////////////////////////////////////////////////////////////
 
   async update(id: string, updateCartDto: UpdateCartDto) {
-
     const product = updateCartDto.products?.[0];
 
     if (!product) {
@@ -123,17 +116,17 @@ export class CartService {
     const updatedCart = await this.cartModel.findOneAndUpdate(
       {
         userName: id,
-        "products.productId": productId
+        'products.productId': productId,
       },
       {
         $set: {
-          "products.$.quantity": q
-        }
+          'products.$.quantity': q,
+        },
       },
       {
         new: true,
-        runValidators: true
-      }
+        runValidators: true,
+      },
     );
 
     if (!updatedCart) {
@@ -150,32 +143,32 @@ export class CartService {
   ////////////////////////////////////////////////////////////
 
   async remove(id: string, productId: string) {
-
     if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException("Invalid Id")
+      throw new BadRequestException('Invalid Id');
 
     if (!Types.ObjectId.isValid(productId))
-      throw new BadRequestException("Invalid productId")
+      throw new BadRequestException('Invalid productId');
 
     const deleteProduct = await this.cartModel.findOneAndUpdate(
       {
         userName: id,
-        "products.productId": productId
+        'products.productId': productId,
       },
       {
         $pull: {
-          products: { productId }
-        }
+          products: { productId },
+        },
       },
       {
         returnDocument: 'after',
-        runValidators: true
-      }
-    )
+        runValidators: true,
+      },
+    );
 
-    if (!deleteProduct) throw new NotFoundException('Product or cart not found')
+    if (!deleteProduct)
+      throw new NotFoundException('Product or cart not found');
 
-    return 'Specific Product Deleted Successfully'
+    return 'Specific Product Deleted Successfully';
   }
 
   ////////////////////////////////////////////////////////////
@@ -185,29 +178,27 @@ export class CartService {
   ////////////////////////////////////////////////////////////
 
   async removeAll(id: string) {
-
     if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException("Invalid Id")
+      throw new BadRequestException('Invalid Id');
 
     const deleteAllProduct = await this.cartModel.findOneAndUpdate(
       {
-        userName: id
+        userName: id,
       },
       {
         $set: {
-          products: []
-        }
+          products: [],
+        },
       },
       {
         returnDocument: 'after',
-        runValidators: true
-      }
-    )
+        runValidators: true,
+      },
+    );
 
     if (!deleteAllProduct)
-      throw new NotFoundException('Product or cart not found')
+      throw new NotFoundException('Product or cart not found');
 
-    return "All Products Is Deleted Successfully"
+    return 'All Products Is Deleted Successfully';
   }
 }
-

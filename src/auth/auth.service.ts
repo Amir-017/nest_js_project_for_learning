@@ -2,12 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AuthProvider, User } from '../Schemas/user.scham';
+import { AuthProvider, User } from '../users/Schemas/user.scham';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel('User') private userModel: Model<User>, private jwtService: JwtService) { }
+  constructor(
+    @InjectModel('User') private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
   ////////////////////////////////////////////////////////////
 
@@ -25,7 +28,9 @@ export class AuthService {
     }
 
     if (!user.password) {
-      throw new BadRequestException('This account uses Google login. Please login with Google.');
+      throw new BadRequestException(
+        'This account uses Google login. Please login with Google.',
+      );
     }
 
     const isMatch = await bcrypt.compare(password, user.password ?? '');
@@ -34,7 +39,10 @@ export class AuthService {
     }
 
     const payload = { email: user.email, id: user._id, role: user.role };
-    const token = this.jwtService.sign(payload, { secret: process.env.API_KEY, expiresIn: '1h' });
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.API_KEY,
+      expiresIn: '1h',
+    });
 
     return { accessToken: token };
   }
@@ -71,12 +79,10 @@ export class AuthService {
           email: dbUser.email,
           role: dbUser.role,
         },
-        { secret: process.env.API_KEY, expiresIn: '1h' }
+        { secret: process.env.API_KEY, expiresIn: '1h' },
       );
 
-      return res.redirect(
-        `http://localhost:5173/auth/success?token=${token}`
-      );
+      return res.redirect(`http://localhost:5173/auth/success?token=${token}`);
     } catch (error) {
       console.error('Google login error:', error);
       return res.redirect(`http://localhost:5173/auth/error?message=${error}`);

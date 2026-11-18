@@ -1,4 +1,9 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpException,
+} from '@nestjs/common';
 
 @Catch()
 export class AllExceptionsFilter<T> implements ExceptionFilter {
@@ -17,7 +22,8 @@ export class AllExceptionsFilter<T> implements ExceptionFilter {
     if (exception.code === 11000) {
       return response.status(400).json({
         statusCode: 400,
-        message: 'Duplicate key error: A record with this value already exists.',
+        message:
+          'Duplicate key error: A record with this value already exists.',
         error: 'Bad Request',
       });
     }
@@ -47,4 +53,3 @@ export class AllExceptionsFilter<T> implements ExceptionFilter {
     });
   }
 }
-   

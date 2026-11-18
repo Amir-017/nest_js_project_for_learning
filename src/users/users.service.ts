@@ -9,12 +9,12 @@ import { log } from 'console';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private userModel: Model<User>) { }
- ////////////////////////////////////////////////////////////
+  constructor(@InjectModel('User') private userModel: Model<User>) {}
+  ////////////////////////////////////////////////////////////
 
- // Create new user (register)
+  // Create new user (register)
 
- ////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////
   async create(createUserDto: CreateUserDto) {
     if (!createUserDto.password) {
       throw new BadRequestException('Password is required for local signup');
@@ -31,7 +31,7 @@ export class UsersService {
   }
 
   ////////////////////////////////////////////////////////////
-  
+
   // Get all users
 
   ////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ export class UsersService {
   ////////////////////////////////////////////////////////////
   findOne(id: string) {
     log(id);
-    log('hi there')
+    log('hi there');
     // log('findOne called with id:');
     return this.userModel.findById(id);
   }
@@ -62,10 +62,9 @@ export class UsersService {
       updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 10);
     }
 
-
     return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
   }
-   
+
   ////////////////////////////////////////////////////////////
 
   // Delete user
@@ -81,6 +80,6 @@ export class UsersService {
 
   ////////////////////////////////////////////////////////////
   infoUser(id: string) {
-    return this.userModel.findById(id)
+    return this.userModel.findById(id);
   }
 }

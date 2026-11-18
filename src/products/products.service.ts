@@ -1,14 +1,13 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product } from './Scheams/product.schema';
-import { Role } from 'src/users/Decorectors/role/role.decorator';
 
 @Injectable()
 export class ProductsService {
-  constructor(@InjectModel('Product') private productModel:Model<Product>) {}
+  constructor(@InjectModel('Product') private productModel: Model<Product>) {}
   ////////////////////////////////////////////////////////////
 
   // Create a new product (admin only)
@@ -22,7 +21,7 @@ export class ProductsService {
   ////////////////////////////////////////////////////////////
 
   // Retrieve all products
- 
+
   ////////////////////////////////////////////////////////////
   findAll() {
     return this.productModel.find();
@@ -43,7 +42,9 @@ export class ProductsService {
 
   ////////////////////////////////////////////////////////////
   update(id: string, updateProductDto: UpdateProductDto) {
-    return this.productModel.findByIdAndUpdate(id, updateProductDto, { new: true });
+    return this.productModel.findByIdAndUpdate(id, updateProductDto, {
+      new: true,
+    });
   }
 
   ////////////////////////////////////////////////////////////

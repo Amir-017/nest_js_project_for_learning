@@ -8,8 +8,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
- 
- const config = new DocumentBuilder()
+
+  const config = new DocumentBuilder()
     .setTitle('My API')
     .addBearerAuth()
     .setDescription('NestJS Swagger')
@@ -19,7 +19,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup('api', app, document);
-
 
   app.use(helmet());
   app.enableCors();

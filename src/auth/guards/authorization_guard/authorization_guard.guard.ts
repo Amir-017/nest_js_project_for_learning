@@ -18,7 +18,7 @@ export class AuthorizationGuardGuard implements CanActivate {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     // console.log(user);
     // console.log(roles);
-    
+
     if (roles && user && !roles.includes(user)) {
       throw new ForbiddenException('Access denied for your role ');
     }
