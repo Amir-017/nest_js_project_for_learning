@@ -173,8 +173,7 @@ export class CartService {
       }
     )
 
-    if (!deleteProduct)
-      throw new NotFoundException('Product or cart not found')
+    if (!deleteProduct) throw new NotFoundException('Product or cart not found')
 
     return 'Specific Product Deleted Successfully'
   }

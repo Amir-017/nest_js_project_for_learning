@@ -45,7 +45,7 @@ export class CartController {
   findAll(@Query('word') word: string) {
     return this.cartService.findAll(word);
   }
-
+     
   ////////////////////////////////////////////////////////////
 
   // Get logged in user cart details
