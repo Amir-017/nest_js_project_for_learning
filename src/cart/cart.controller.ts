@@ -42,6 +42,9 @@ export class CartController {
   ////////////////////////////////////////////////////////////
 
   @Role('user')
+  @UseGuards(AuthGuardGuard, AuthorizationGuardGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Add products to cart' })
   @Post()
   @ApiOperation({ summary: 'Add products to cart' })
   @ApiOkResponse({
